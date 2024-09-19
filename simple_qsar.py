@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Simple QSAR model using RDKit and SVM."""
+
 import logging
 import os
 
@@ -49,9 +50,7 @@ def calculate_descriptors(molecules):
 
 
 @click.group()
-@click.option(
-    "--verbose", "-v", count=True, help="Increase verbosity level (-v, -vv, -vvv)."
-)
+@click.option("--verbose", "-v", count=True, help="Increase verbosity level (-v, -vv, -vvv).")
 @click.pass_context
 def cli(ctx, verbose):
     """QSAR Model Command Line Interface."""
@@ -150,9 +149,7 @@ def train(ctx, active, inactive, model_path):
 def screen(ctx, input, model_path, output, threshold):
     """Screen new molecules using the trained QSAR model."""
     if not os.path.exists(model_path):
-        logging.error(
-            f"Model file '{model_path}' not found. Please train the model first."
-        )
+        logging.error(f"Model file '{model_path}' not found. Please train the model first.")
         return
 
     logging.info("Loading the QSAR model...")
@@ -174,9 +171,7 @@ def screen(ctx, input, model_path, output, threshold):
     probabilities = pipeline.predict_proba(descriptors)[:, 1]
 
     # Classify molecules based on the threshold
-    predicted_classes = [
-        "Active" if prob >= threshold else "Inactive" for prob in probabilities
-    ]
+    predicted_classes = ["Active" if prob >= threshold else "Inactive" for prob in probabilities]
 
     # Save predictions
     with open(output, "w") as f:
